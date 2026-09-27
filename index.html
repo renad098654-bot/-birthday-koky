@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>For You ♡</title>
+<style>
+*{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;background:#fffafc;color:#4a3145;overflow:hidden}
+.page{display:none;min-height:100vh;position:relative;padding:28px 20px;align-items:center;justify-content:center}
+.page.active{display:flex;animation:pageIn .65s ease}
+@keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.bgball{position:absolute;font-size:48px;opacity:.85;animation:float 4s ease-in-out infinite;pointer-events:none}
+.b1{top:8%;left:5%}.b2{top:18%;right:6%;animation-delay:1s}.b3{bottom:10%;left:10%;animation-delay:2s}.b4{bottom:15%;right:9%;animation-delay:.5s}.b5{top:48%;left:2%;font-size:34px;animation-delay:1.5s}.b6{top:55%;right:3%;font-size:38px;animation-delay:2.5s}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-18px) rotate(4deg)}}
+.card{width:min(720px,94vw);text-align:center;background:rgba(255,255,255,.9);border:1px solid #f2dce8;border-radius:28px;padding:34px 24px;box-shadow:0 18px 55px rgba(133,79,112,.12);position:relative;z-index:2}
+.paper{background:#fff7fb;border-radius:22px;padding:26px;border:1px dashed #e8b9d1}
+h1{font-size:clamp(34px,7vw,66px);margin:8px 0 18px;color:#7c4770;letter-spacing:-1px}
+h2{font-size:clamp(24px,5vw,38px);margin:5px 0 22px;color:#7c4770}
+p{font-size:18px;line-height:1.9;margin:8px 0}
+.small{font-size:13px;color:#9a7890}
+.btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:25px}
+button,.btn{border:0;border-radius:999px;padding:14px 30px;font-size:17px;cursor:pointer;background:#c996d9;color:white;box-shadow:0 8px 18px rgba(154,92,158,.18);transition:.2s}
+button:hover,.btn:hover{transform:translateY(-2px)}
+.btn.alt{background:#f3b1c8;color:#6b3f56}
+.heart{font-size:45px;animation:pulse 1.4s infinite}
+@keyframes pulse{50%{transform:scale(1.15)}}
+.options{display:grid;gap:12px;max-width:430px;margin:0 auto}
+.options button{background:#fff;border:1px solid #e8bfd4;color:#68455e;box-shadow:none}
+.options button.correct{background:#d9b4e5;color:white}
+.options button.wrong.shake{animation:shake .3s}
+@keyframes shake{25%{transform:translateX(6px)}50%{transform:translateX(-6px)}75%{transform:translateX(4px)}}
+.confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.confetti i{position:absolute;font-style:normal;font-size:24px;animation:fall 3s linear infinite}
+@keyframes fall{from{transform:translateY(-60px) rotate(0)}to{transform:translateY(110vh) rotate(360deg)}}
+.memories{display:flex;gap:18px;justify-content:center;align-items:flex-end;flex-wrap:wrap;margin-top:12px}
+.memory{width:180px;height:220px;background:white;border-radius:10px;padding:9px;box-shadow:0 10px 24px rgba(90,50,80,.15);transform:rotate(-3deg);transition:.35s;position:relative}
+.memory:nth-child(2){transform:rotate(3deg);}.memory:nth-child(3){transform:rotate(-1deg)}
+.memory img{width:100%;height:175px;object-fit:cover;border-radius:6px;background:#f4e7ee}
+.memory span{display:block;margin-top:7px;color:#9a6c88;font-size:13px}
+.memBall{position:absolute;right:8px;top:-50px;font-size:42px;cursor:pointer;animation:float 2.8s infinite}
+.memory.reveal{opacity:1;transform:translateY(0) rotate(0)}
+.memory.hidden{opacity:.35;filter:blur(7px)}
+.envelopeWrap{position:relative;width:340px;max-width:86vw;height:245px;margin:15px auto}
+.envelope{position:absolute;inset:35px 0 0;background:#f4c9dc;border-radius:8px;box-shadow:0 15px 30px rgba(100,50,80,.15);overflow:visible}
+.envelope:before{content:"";position:absolute;left:0;right:0;top:0;border-left:170px solid transparent;border-right:170px solid transparent;border-top:110px solid #edb7d0;transform-origin:top;z-index:3;transition:.8s}
+.envelope.open:before{transform:rotateX(180deg);z-index:0}
+.flap{position:absolute;left:50%;top:70px;transform:translate(-50%,-50%);width:72px;height:72px;background:#9d4969;border-radius:50%;display:grid;place-items:center;color:white;font-weight:700;z-index:5;box-shadow:0 5px 12px #a96b84}
+.ribbon{position:absolute;left:50%;top:-5px;width:5px;height:120px;background:#d37fa8;transform:translateX(-50%);z-index:4}
+.bird{position:absolute;left:-75px;top:10px;font-size:62px;z-index:8;animation:birdFly 3.5s ease-in-out infinite}
+@keyframes birdFly{0%,100%{transform:translate(0,0) rotate(-4deg)}50%{transform:translate(115px,-18px) rotate(5deg)}}
+.letter{display:none;max-width:650px;max-height:60vh;overflow:auto;text-align:right;background:#fffafc;border:1px solid #efd5e2;border-radius:18px;padding:24px;line-height:2;font-size:17px;white-space:pre-line}
+.letter.show{display:block;animation:letterIn .8s ease}
+@keyframes letterIn{from{opacity:0;transform:translateY(35px) scale(.96)}to{opacity:1;transform:none}}
+.nextCircle{position:fixed;right:18px;bottom:18px;width:58px;height:58px;border-radius:50%;background:#d94e6f;color:#fff;display:none;align-items:center;justify-content:center;font-size:23px;cursor:pointer;z-index:20;box-shadow:0 10px 25px #d94e6f55}
+.nextHint{position:fixed;right:16px;bottom:80px;font-size:11px;color:#9b748b;display:none}
+.musicbox{display:grid;gap:18px;justify-items:center}.qr{width:190px;height:190px;border-radius:12px;border:8px solid white;box-shadow:0 8px 25px #8b5d7a22}
+iframe{width:min(360px,90vw);height:620px;border:0;border-radius:18px;background:#f7edf4}
+</style>
+</head>
+<body>
+
+<section class="page active" id="p1">
+  <div class="bgball b1">🎈</div><div class="bgball b2">🎈</div><div class="bgball b3">🎈</div><div class="bgball b4">🎈</div>
+  <div class="card paper">
+    <div class="heart">♡</div><h1>Do you love me?</h1>
+    <p class="small">اختيار واحد فقط… وفكر كويس</p>
+    <div class="btns"><button onclick="go(2)">Yes ♡</button><button class="alt" onclick="go(2)">أكيد</button></div>
+  </div>
+</section>
+
+<section class="page" id="p2">
+  <div class="bgball b1">🎈</div><div class="bgball b2">🎈</div><div class="bgball b3">🎈</div><div class="bgball b4">🎈</div>
+  <div class="card"><h2>ماهو اليوم الذي اجتمعت أرواحنا به؟</h2>
+    <div class="options">
+      <button onclick="wrong(this)">12 أكتوبر</button>
+      <button onclick="wrong(this)">1 يناير</button>
+      <button onclick="correct()">15 نوفمبر ♡</button>
+      <button onclick="wrong(this)">22 ديسمبر</button>
+    </div><p id="quizmsg" class="small"></p>
+  </div>
+</section>
+
+<section class="page" id="p3">
+  <div class="confetti"><i style="left:8%;animation-delay:.2s">✦</i><i style="left:20%;animation-delay:1s">♡</i><i style="left:35%;animation-delay:.4s">✦</i><i style="left:60%;animation-delay:1.4s">♥</i><i style="left:78%;animation-delay:.8s">✧</i><i style="left:90%;animation-delay:1.8s">♡</i></div>
+  <div class="bgball b1">🎈</div><div class="bgball b2">🎈</div><div class="bgball b3">🎈</div><div class="bgball b4">🎈</div>
+  <div class="card"><div class="heart">🎉</div><h1>كفو!</h1><p>واضح إنك تعرف قصتنا كويس ♡</p><button onclick="go(4)">استمر →</button></div>
+</section>
+
+<section class="page" id="p4">
+  <div class="bgball b1">🎈</div><div class="bgball b2">🎈</div><div class="bgball b3">🎈</div><div class="bgball b4">🎈</div>
+  <div class="card"><h2>ذكرياتنا</h2><p class="small">اضغط على البالونات بالترتيب</p>
+    <div class="memories">
+      <div class="memory hidden" id="m1"><div class="memBall" onclick="reveal(1)">🎈</div><img src="photos/photo1.jpg" onerror="this.src='https://placehold.co/400x500/f7e8f0/9b6684?text=Photo+1'"><span>أول ذكرى ♡</span></div>
+      <div class="memory hidden" id="m2"><div class="memBall" onclick="reveal(2)">🎈</div><img src="photos/photo2.jpg" onerror="this.src='https://placehold.co/400x500/f7e8f0/9b6684?text=Photo+2'"><span>ذكرى ثانية ♡</span></div>
+      <div class="memory hidden" id="m3"><div class="memBall" onclick="reveal(3)">🎈</div><img src="photos/photo3.jpg" onerror="this.src='https://placehold.co/400x500/f7e8f0/9b6684?text=Photo+3'"><span>آخر ذكرى ♡</span></div>
+    </div><button id="memNext" style="display:none;margin-top:22px" onclick="go(5)">التالي →</button>
+  </div>
+</section>
+
+<section class="page" id="p5">
+  <div class="bgball b1">🎈</div><div class="bgball b2">🎈</div><div class="bgball b3">🎈</div><div class="bgball b4">🎈</div>
+  <div class="card"><h2>وصلت للرسالة…</h2><p class="small">العصفور بيفك الشريط لك</p>
+    <div class="envelopeWrap"><div class="bird">🕊️</div><div class="envelope" id="env"><div class="ribbon"></div><div class="flap">Rk</div></div></div>
+    <button onclick="openEnv()">افتح الرسالة ♡</button>
+  </div>
+</section>
+
+<section class="page" id="p6">
+  <div class="bgball b1">🎈</div><div class="bgball b2">🎈</div><div class="bgball b3">🎈</div><div class="bgball b4">🎈</div>
+  <div class="card"><div class="letter show" id="letter">في الثاني عشر من اكتوبر ولد أجمل ما حدث في حياتي ،كل عام وأنت أجمل ما في أيامي وأحن قلب احتواني وأطيب روح عرفتها لا أعرف قلبا يشبه قلبك، كل ما فيك حنان وكل ما فيك طيبة، كأن الله اصطفاك لتكون ملاذا آمنا لكل من يحبك وكأن وجودك وحده يكفي ليجعل الحياة أكثر دفئًا وطمأنينة أما أنا، فأحبك حباً لا تصفه الكلمات، ولا تتسع له الرسائل. أحبك لأنك أنت وأغلى من سكن قلبي، وأفضل إنسان عرفته. وما زلت أسأل الله أن يهبك أعوامًا تليق بقلبك، أعوامًا مليئة بالسكينة والفرح والحب</div></div>
+  <div class="nextHint" id="hint">لو ضغطت هنا بتروح الرسالة</div><div class="nextCircle" id="nextCircle" onclick="go(7)">➜</div>
+</section>
+
+<section class="page" id="p7">
+  <div class="bgball b1">🎈</div><div class="bgball b2">🎈</div><div class="bgball b3">🎈</div><div class="bgball b4">🎈</div>
+  <div class="card"><h2>أغنيتنا ♡</h2><p>شغّلها من هنا أو امسح الرمز</p>
+    <div class="musicbox">
+      <a class="btn" href="https://vt.tiktok.com/ZSb6RWVEA/" target="_blank" rel="noopener">تشغيل الأغنية ♫</a>
+      <img class="qr" id="qr" alt="QR">
+      <p class="small">يمسح الرمز وبتوصله للأغنية</p>
+    </div>
+  </div>
+</section>
+
+<script>
+const pages=[...document.querySelectorAll('.page')];
+function go(n){pages.forEach(p=>p.classList.remove('active'));document.getElementById('p'+n).classList.add('active')}
+function wrong(el){el.classList.add('shake');document.getElementById('quizmsg').textContent='مو هذا… حاول مرة ثانية';setTimeout(()=>el.classList.remove('shake'),350)}
+function correct(){document.getElementById('quizmsg').textContent='صح ♡';setTimeout(()=>go(3),700)}
+let step=0;
+function reveal(n){
+  if(n!==step+1)return;
+  step=n; document.getElementById('m'+n).classList.remove('hidden');document.getElementById('m'+n).classList.add('reveal');
+  if(step===3)document.getElementById('memNext').style.display='inline-block';
+}
+function openEnv(){
+  document.getElementById('env').classList.add('open');
+  setTimeout(()=>go(6),1200);
+  // bird keeps flying while the seal drops away
+}
+setTimeout(()=>{if(location.hash==='#start')go(1)},10);
+
+// QR generated from the supplied TikTok URL using a public QR endpoint.
+document.getElementById('qr').src='https://api.qrserver.com/v1/create-qr-code/?size=220x220&data='+encodeURIComponent('https://vt.tiktok.com/ZSb6RWVEA/');
+
+// Show the red next button after the reader has had a moment.
+setTimeout(()=>{document.getElementById('nextCircle').style.display='flex';document.getElementById('hint').style.display='block'},3500);
+</script>
+</body>
+</html>
